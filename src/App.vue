@@ -30,11 +30,11 @@
             <input type="checkbox" v-model="item.isDonePr" />
           </td>
           <td class="marg">{{ item.group }}</td>
-          <button v-on:click="updateStudentInfo(editId)">Update student</button>
+          <button @click="updateStudentInfo(editId)">Update student</button>
         </template>
         <template v-else>
           <td>
-            <a href="#" v-on:click.prevent="rplForm(item._id)">Update</a>
+            <a href="#" @click.prevent="setEditItem(item._id)">Update</a>
           </td>
         </template>
 
@@ -73,6 +73,7 @@ export default {
           });
         });
     },
+
     addStudent() {
       axios.post('http://34.82.81.113:3000/students', this.student).then(() => {
         axios.get('http://34.82.81.113:3000/students').then((response) => {
@@ -81,18 +82,22 @@ export default {
         });
       });
     },
+
     supdateStudent() {
       console.log('a');
     },
+
     fillformer: function (id) {
       let foundStudent = this.students.find((element) => {
         return element.id == id;
       });
       (this.id = foundStudent._id), (this.name = foundStudent.name);
     },
-    rplForm(id) {
+
+    setEditItem(id) {
       this.editId = id;
     },
+
     updateStudentInfo(id) {
       let foundStudent = this.students.find((element) => {
         return element._id == id;
