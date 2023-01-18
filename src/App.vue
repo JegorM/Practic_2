@@ -12,12 +12,23 @@
         <input class="serachNameStudents oppa" placeholder="Search" type="text" name="search" v-model="search" /><br />
         <table class="allStudents">
             <tr v-for="item in students" :key="item._id">
+
                 <td class="marg">{{ item.name }}</td>
-                <td class="marg">
-                    <input type="checkbox" v-model="item.isDonePr" />
-                </td>
+                <td class="marg"><input type="checkbox" v-model="item.isDonePr" /></td>
                 <td class="marg">{{ item.group }}</td>
                 <td class="marg "><a href="#" @click="deleteStudent(item._id)">Видалити</a></td>
+                <template v-if="item._id == editId">
+                    <td><input v-model="item.name"></td>
+                    <td class="marg"><input type="checkbox" v-model="item.isDonePr" /></td>
+                    <td class="marg">{{ item.group }}</td>
+                    <input type="button" v-on:click="update2(editId)">
+                </template>
+                <template v-else>
+                    <td><a href="#" v-on:click.prevent="fillform(item._id)">Update1</a><a href="#"
+                            v-on:click.prevent="rplForm(item._id)">Update2</a></td>
+                </template>
+
+                <!-- <td class="marg"><a href="#" @click="supdateStudent(item._id)">Змінити</a></td> -->
             </tr>
         </table>
     </div>
@@ -64,10 +75,34 @@ export default ({
                 })
             });
         },
-        searchStudent() {
-            
-        }
-    },
+        supdateStudent() {
+            console.log('a')
+        },
+        fillformer: function (id) {
+            let foundStudent = this.students.find((element) => {
+                return element.id == id;
+            })
+            this.id = foundStudent._id,
+                this.name = foundStudent.name
+        },
+        rplForm: function (id) {
+            this.editId = id;
+        },
+        update2: function (_id) {
+            let foundStudent = this.students.find((element) => {
+                return element.id == id;
+            })
+            axios.put("http://34.82.81.113:3000/students" + id, {
+                name: foundStudent.name,
+                group: foundStudent.group,
+                isDonePr: false,
+            })
+                .then((response) => {
+                    console.log(response.data)
+                })
+            this.editId = 0;
+        },
+    }
 })
 
 
