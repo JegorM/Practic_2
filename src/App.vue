@@ -49,6 +49,7 @@ import axios from 'axios';
 export default {
   data() {
     return {
+      editId: '',
       students: [],
       search: '',
       student: { name: '', isDonePr: false, group: '' },
@@ -89,7 +90,7 @@ export default {
       });
       (this.id = foundStudent._id), (this.name = foundStudent.name);
     },
-    rplForm: function (id) {
+    rplForm(id) {
       this.editId = id;
     },
     update2: function (_id) {
