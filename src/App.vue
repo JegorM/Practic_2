@@ -30,7 +30,7 @@
             <input type="checkbox" v-model="item.isDonePr" />
           </td>
           <td class="marg">{{ item.group }}</td>
-          <input type="button" v-on:click="update2(editId)" />
+          <button v-on:click="updateStudentInfo(editId)">Update student</button>
         </template>
         <template v-else>
           <td>
@@ -93,12 +93,13 @@ export default {
     rplForm(id) {
       this.editId = id;
     },
-    update2: function (_id) {
+    updateStudentInfo(id) {
       let foundStudent = this.students.find((element) => {
-        return element.id == id;
+        return element._id == id;
       });
+
       axios
-        .put('http://34.82.81.113:3000/students' + id, {
+        .put('http://34.82.81.113:3000/students/' + id, {
           name: foundStudent.name,
           group: foundStudent.group,
           isDonePr: false,
@@ -106,6 +107,7 @@ export default {
         .then((response) => {
           console.log(response.data);
         });
+
       this.editId = 0;
     },
   },
