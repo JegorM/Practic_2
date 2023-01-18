@@ -37,7 +37,14 @@
         v-for="item in students"
         :key="item._id"
       >
-        <td class="marg">{{ item.name }}</td>
+        <td
+          :class="[
+            'marg',
+            search != '' && item.name.indexOf(search) >= 0 && 'heileit'
+          ]"
+        >
+          {{ item.name }}
+        </td>
         <td class="marg">
           <input
             type="checkbox"
@@ -54,7 +61,12 @@
           </a>
         </td>
         <template v-if="item._id == editId">
-          <td><input v-model="item.name" /></td>
+          <td>
+            <input
+              class="cock"
+              v-model="item.name"
+            />
+          </td>
           <td class="marg">
             <input
               type="checkbox"
@@ -62,7 +74,12 @@
             />
           </td>
           <td class="marg">{{ item.group }}</td>
-          <button @click="updateStudentInfo(editId)">Update student</button>
+          <button
+            class="marg upData"
+            @click="updateStudentInfo(editId)"
+          >
+            Update student
+          </button>
         </template>
         <template v-else>
           <td>
@@ -74,8 +91,6 @@
             </a>
           </td>
         </template>
-
-        <!-- <td class="marg"><a href="#" @click="supdateStudent(item._id)">Змінити</a></td> -->
       </tr>
     </table>
   </div>
@@ -86,6 +101,7 @@ import axios from 'axios'
 export default {
   data() {
     return {
+      search: '',
       editId: '',
       students: [],
       search: '',
@@ -120,9 +136,12 @@ export default {
       })
     },
 
-    supdateStudent() {
-      console.log('a')
-    },
+    // search(name) {
+    //   let foundStudent = this.students.find(element => {
+    //     return element.id == id
+    //   })
+    //   var elements = document.getElementsByName(name);
+    // },
 
     fillformer: function (id) {
       let foundStudent = this.students.find(element => {
